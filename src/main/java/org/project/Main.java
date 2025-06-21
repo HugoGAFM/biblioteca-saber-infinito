@@ -13,8 +13,9 @@ public class Main {
             System.out.println("O que deja fazer:" +
                     "\n1) Cadastrar livros." +
                     "\n2) Cadastrar membro." +
-                    "\n3) Fazer emprestimo." +
-                    "\n4) Devolver livro." +
+                    "\n3) Buscar livros." +
+                    "\n4) Fazer emprestimo." +
+                    "\n5) Devolver livro." +
                     "\n0) Sair.");
             escolha = scanner.nextInt();
 
@@ -23,9 +24,11 @@ public class Main {
                     break;
                 case 2://cadastro de mebros
                     break;
-                case 3://fazer emprestimo
+                case 3://buscar livro
                     break;
-                case 4://devolver livro
+                case 4://fazer emprestimo 
+                    break;
+                case 5://devolver livro
                     break;
                 default:
                 System.out.println("Saindo...");
