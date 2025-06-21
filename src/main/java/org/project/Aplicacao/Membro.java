@@ -15,5 +15,8 @@ public class Membro {
         this.devendo=devendo;
     }
 
+    public boolean isDevendo() {
+        return devendo;
+    }
 
 }
