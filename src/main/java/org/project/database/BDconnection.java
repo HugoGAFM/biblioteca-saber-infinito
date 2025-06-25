@@ -16,17 +16,26 @@ public class BDconnection {
         ) {
             statement.setQueryTimeout(30);
 
-            String sql = loadTextFile("biblioteca.sql");
-            statement.execute(sql);
-            /* statement.executeUpdate("drop table if exists person");
-            statement.executeUpdate("create table person (id integer, name string)");
-            statement.executeUpdate("insert into person values(1, 'leo')");
-            statement.executeUpdate("insert into person values(2, 'yui')"); */
-            ResultSet rs = statement.executeQuery("select * from tarefa");
-            while (rs.next()) {
-                System.out.println("name = " + rs.getString("texto"));
-                System.out.println("id = " + rs.getInt("id"));
+            // Corrigido: acesso à classe FilesUtil
+            String sql = FilesUtil.loadTextFile("tabelasBiblioteca.sql");
+            String[] comandos = sql.split(";");
+
+            for (String comando : comandos) {
+                comando = comando.trim();
+                if (!comando.isEmpty()) {
+                    statement.execute(comando + ";");
+                }
             }
+
+            // Corrigido: informe o nome da tabela criada no SQL
+            ResultSet rs = statement.executeQuery("SELECT * FROM livro"); // ou "membro", etc.
+
+            // Corrigido: garanta que essas colunas existem
+            while (rs.next()) {
+                System.out.println("ISBN = " + rs.getLong("ISBN"));
+                System.out.println("Título = " + rs.getString("titulo"));
+            }
+
         } catch (SQLException e) {
             e.printStackTrace(System.err);
         } catch (IOException e) {

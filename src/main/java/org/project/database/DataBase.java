@@ -14,6 +14,8 @@ public class DataBase {
             connection = DriverManager.getConnection("jdbc:sqlite:biblioteca.db");
         } catch (SQLException e){
             System.err.println("Puts :/ deu erro ao criar o arquivo !");
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao conectar no banco", e);
 
         }
     }
