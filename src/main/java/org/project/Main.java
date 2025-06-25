@@ -1,9 +1,13 @@
 package org.project;
 
+import org.project.database.BDconnection;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        BDconnection.iniciar();
+
         Scanner scanner=new Scanner(System.in);
         int escolha;
 

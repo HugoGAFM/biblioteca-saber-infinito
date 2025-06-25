@@ -11,7 +11,7 @@ public class DataBase {
 
     private DataBase(){
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:lista-de-tarefas.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:biblioteca.db");
         } catch (SQLException e){
             System.err.println("Puts :/ deu erro ao criar o arquivo !");
 
