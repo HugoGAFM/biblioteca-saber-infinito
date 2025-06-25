@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.logging.Logger;
 
 public class FilesUtil {
-    private static final Logger LOG = Logger.getLogger(FilesUtils.class.getName());
+    private static final Logger LOG = Logger.getLogger(FilesUtil.class.getName());
 
     public static String loadTextFile(String filename) throws IOException {
         InputStream is = BDconnection.class.getResourceAsStream("/" + filename);

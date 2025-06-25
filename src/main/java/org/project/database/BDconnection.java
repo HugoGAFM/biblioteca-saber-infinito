@@ -16,7 +16,7 @@ public class BDconnection {
         ) {
             statement.setQueryTimeout(30);
 
-            String sql = loadTextFile(".sql");
+            String sql = loadTextFile("biblioteca.sql");
             statement.execute(sql);
             /* statement.executeUpdate("drop table if exists person");
             statement.executeUpdate("create table person (id integer, name string)");
