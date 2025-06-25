@@ -8,7 +8,7 @@ public class EmprestimoLivro {
     Date dataDevolucao;
     float multaCalculo;
     int idMembro;
-    Long ISBN;
+    Long isbn;
 
     public EmprestimoLivro(){
         this.idEmprestimo = idEmprestimo;
@@ -16,7 +16,7 @@ public class EmprestimoLivro {
         this.dataEmprestimo = dataEmprestimo;
         this.multaCalculo = multaCalculo;
         this.idMembro = idMembro;
-        this.ISBN = ISBN;
+        this.isbn = isbn;
     }
 
     //Getters
@@ -44,7 +44,9 @@ public class EmprestimoLivro {
         return idMembro;
     }
 
-    public Long getISBN(){
-        return ISBN;
+    public Long getIsbn(){
+        return isbn;
     }
+
+    //Métodos
 }
