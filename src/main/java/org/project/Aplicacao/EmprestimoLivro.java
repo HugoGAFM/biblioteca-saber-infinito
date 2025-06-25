@@ -1,22 +1,50 @@
 package org.project.Aplicacao;
-
+import java.util.Date;
 
 public class EmprestimoLivro {
+    int idEmprestimo;
     boolean isDisponivel;
-    String dataEmprestimo;
+    Date dataEmprestimo;
+    Date dataDevolucao;
     float multaCalculo;
-    String idMembro;
+    int idMembro;
     Long ISBN;
 
     public EmprestimoLivro(){
-        this.isDisponivel=isDisponivel;
-        this.dataEmprestimo=dataEmprestimo;
-        this.multaCalculo=multaCalculo;
-        this.idMembro=idMembro;
-        this.ISBN=ISBN;
+        this.idEmprestimo = idEmprestimo;
+        this.isDisponivel = isDisponivel;
+        this.dataEmprestimo = dataEmprestimo;
+        this.multaCalculo = multaCalculo;
+        this.idMembro = idMembro;
+        this.ISBN = ISBN;
     }
 
-    public String getDataEmprestimo() {
+    //Getters
+    public int getIdEmprestimo(){
+        return idEmprestimo;
+    }
+    
+    public boolean getIsDisponivel(){
+        return isDisponivel;
+    }
+
+    public Date getDataEmprestimo(){
         return dataEmprestimo;
+    }
+
+    public Date getDataDevolucao(){
+        return dataDevolucao;
+    }
+
+    public float getMultaCalculo(){
+        return multaCalculo;
+    }
+
+    public int getIdMembro(){
+        return idMembro;
+    }
+
+    public Long getISBN(){
+        return ISBN;
     }
 }
