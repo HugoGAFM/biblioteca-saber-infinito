@@ -19,4 +19,6 @@ public class Membro {
         return devendo;
     }
 
+    public String buscarMembro(){
+        return nome;
 }
