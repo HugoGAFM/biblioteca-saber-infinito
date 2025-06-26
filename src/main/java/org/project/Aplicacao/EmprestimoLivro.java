@@ -104,4 +104,13 @@ public class EmprestimoLivro {
         System.out.println("Data do empréstimo: " + dataEmprestimo);
         System.out.println("Data prevista para devolução: " + dataDevolucao);
     }
+
+    public void registrarDevolucao(){
+        System.out.println("REALIZAR DEVOLUÇÃO");
+        System.out.print("Digite o ID do membro: ");
+        System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
+        for(int i=1; i<6; i++){ //CASO o número máximo de livros que podem ser emprestado a um mesmo usuário seja 5.
+            System.out.printf("%i. %s", i, );
+        }
+    }
 }
