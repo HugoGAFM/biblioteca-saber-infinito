@@ -113,7 +113,7 @@ public class EmprestimoLivro {
         int idMembro = Integer.parseInt(scanner.nextLine());
         
         System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
-        for(int i=1; i<6; i++){ //CASO o número máximo de livros que podem ser emprestado a um mesmo usuário seja 5.
+        for(int i=1; i<????; i++){
             System.out.printf("%i. %s", i, );
         }
     }
