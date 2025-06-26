@@ -107,7 +107,11 @@ public class EmprestimoLivro {
 
     public void registrarDevolucao(){
         System.out.println("REALIZAR DEVOLUÇÃO");
+        Scanner scanner = new Scanner(System.in);
+        
         System.out.print("Digite o ID do membro: ");
+        int idMembro = Integer.parseInt(scanner.nextLine());
+        
         System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
         for(int i=1; i<6; i++){ //CASO o número máximo de livros que podem ser emprestado a um mesmo usuário seja 5.
             System.out.printf("%i. %s", i, );
