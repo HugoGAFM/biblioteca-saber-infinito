@@ -112,9 +112,9 @@ public class EmprestimoLivro {
         System.out.print("Digite o ID do membro: ");
         int idMembro = Integer.parseInt(scanner.nextLine());
         
-        System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
+    /*   System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
         for(int i=1; i<????; i++){
             System.out.printf("%i. %s", i, );
-        }
+        }*/
     }
 }

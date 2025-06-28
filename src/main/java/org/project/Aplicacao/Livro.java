@@ -1,16 +1,20 @@
 package org.project.Aplicacao;
 
+import java.time.LocalDate;
+
 public class Livro {
     String ISBN;
     String titulo;
     String autor;
-    int copias;
+    int numCopias;
+    private LocalDate dataPublicacao;
 
-    public Livro(String ISBN, String titulo, String autor, int copias){
+    public Livro(String ISBN, String titulo, String autor, LocalDate dataPublicacao, int numCopias){
         this.titulo=titulo;
         this.autor=autor;
-        this.copias=copias;
+        this.numCopias=numCopias;
         this.ISBN=ISBN;
+        this.dataPublicacao = dataPublicacao;
     }
 
     public String getAutor() {
@@ -25,7 +29,9 @@ public class Livro {
         return titulo;
     }
 
-    public int getCopias() {
-        return copias;
+    public LocalDate getDataPublicacao() { return dataPublicacao; }
+
+    public int getnumCopias() {
+        return numCopias;
     }
 }

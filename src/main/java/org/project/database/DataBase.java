@@ -6,38 +6,36 @@ import java.sql.SQLException;
 
 public class DataBase {
     private Connection connection = null;
-
     private static DataBase INSTANCE = null;
 
-    private DataBase(){
+    private DataBase() {
         try {
+            // Conecta ao SQLite
             connection = DriverManager.getConnection("jdbc:sqlite:biblioteca.db");
-        } catch (SQLException e){
-            System.err.println("Puts :/ deu erro ao criar o arquivo !");
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao conectar no banco", e);
-
-        }
-    }
-
-    public Connection getConnection(){
-        return this.connection;
-
-    }
-
-    public void closeConnection(){
-        try {
-            this.connection.close();
         } catch (SQLException e) {
-            System.err.println("Deu erro ao fechar a conexão !");
-            throw new RuntimeException(e);
+            System.err.println("Erro ao conectar no banco!");
+            e.printStackTrace();
+            throw new RuntimeException("Falha na conexão com o banco de dados", e);
         }
     }
 
-    public static DataBase getInstance(){
-        if(INSTANCE == null){
+    public static DataBase getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new DataBase();
         }
         return INSTANCE;
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    public void closeConnection() {
+        try {
+            if (this.connection != null) this.connection.close();
+        } catch (SQLException e) {
+            System.err.println("Erro ao fechar a conexão!");
+            throw new RuntimeException(e);
+        }
     }
 }

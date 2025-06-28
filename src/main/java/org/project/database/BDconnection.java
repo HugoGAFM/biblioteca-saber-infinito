@@ -1,22 +1,19 @@
 package org.project.database;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static org.project.database.FilesUtil.loadTextFile;
 
 public class BDconnection {
     public static void iniciar() {
         try (
-                Connection con = DataBase.getInstance().getConnection();
-                Statement statement = con.createStatement();
+                // Conexão temporária só para criação de tabelas
+                Connection con = DriverManager.getConnection("jdbc:sqlite:biblioteca.db");
+                Statement statement = con.createStatement()
         ) {
             statement.setQueryTimeout(30);
 
-            // Corrigido: acesso à classe FilesUtil
             String sql = FilesUtil.loadTextFile("tabelasBiblioteca.sql");
             String[] comandos = sql.split(";");
 
@@ -27,19 +24,22 @@ public class BDconnection {
                 }
             }
 
-            // Corrigido: informe o nome da tabela criada no SQL
-            ResultSet rs = statement.executeQuery("SELECT * FROM livro"); // ou "membro", etc.
+            System.out.println("\nTabelas carregadas com sucesso. Exibindo livros:");
+            ResultSet rs = statement.executeQuery("SELECT * FROM livro");
 
-            // Corrigido: garanta que essas colunas existem
             while (rs.next()) {
                 System.out.println("ISBN = " + rs.getLong("ISBN"));
                 System.out.println("Título = " + rs.getString("titulo"));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace(System.err);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | IOException e) {
+            System.err.println("Erro ao inicializar o banco:");
+            e.printStackTrace();
         }
+    }
+
+    // Retorna a conexão principal mantida viva
+    public static Connection getConnection() {
+        return DataBase.getInstance().getConnection();
     }
 }
