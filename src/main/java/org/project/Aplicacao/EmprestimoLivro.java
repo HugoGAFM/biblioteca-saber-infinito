@@ -173,6 +173,7 @@ public class EmprestimoLivro{
 
     public void registrarDevolucao(){
         System.out.println("REALIZAR DEVOLUÇÃO");
+        
         System.out.print("Digite o ID do membro: ");
         int idMembro = scanner.nextInt();
 
@@ -210,11 +211,127 @@ public class EmprestimoLivro{
                     return;
                 }
 
-                // aqui você ainda vai implementar a lógica de cálculo de multa e atualização da devolução
-            }
+                String buscarEmprestimo = "SELECT dataEmprestimo, ISBN FROM emprestimoLivro WHERE idEmprestimo = ?";
+                try (PreparedStatement stmtBusca = conn.prepareStatement(buscarEmprestimo)) {
+                    stmtBusca.setInt(1, idEscolhido);
+                    ResultSet rs = stmtBusca.executeQuery();
 
+                    if (rs.next()) {
+                        String dataEmpStr = rs.getString("dataEmprestimo");
+                        long isbnLivro = rs.getLong("ISBN");
+                        Date dataEmprestimo = java.sql.Date.valueOf(dataEmpStr);
+                
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dataEmprestimo);
+                        cal.add(Calendar.DAY_OF_MONTH, 7);
+                        Date dataPrevista = cal.getTime();
+
+                        Date hoje = new Date();
+                        long diasAtraso = (hoje.getTime() - dataPrevista.getTime()) / (1000 * 60 * 60 * 24);
+                        float multa = diasAtraso > 0 ? diasAtraso * 2.0f : 0.0f;
+
+                        String atualizar = "UPDATE emprestimoLivro SET isDisponivel = 1, dataDevolucao = ?, multaCalculo = ? WHERE idEmprestimo = ?";
+                        try (PreparedStatement stmtAtualiza = conn.prepareStatement(atualizar)) {
+                            stmtAtualiza.setString(1, new java.sql.Date(hoje.getTime()).toString());
+                            stmtAtualiza.setFloat(2, multa);
+                            stmtAtualiza.setInt(3, idEscolhido);
+                            stmtAtualiza.executeUpdate();
+                            System.out.println("Devolução registrada!");
+                
+                            if (multa > 0) {
+                                System.out.printf("Multa por atraso: R$ %.2f%n", multa);
+                            } else {
+                                System.out.println("Livro devolvido no prazo. Sem multa.");
+                            }
+                        }
+
+                        String devolverCopia = "UPDATE livro SET numCopias = numCopias + 1 WHERE ISBN = ?";
+                        try (PreparedStatement stmtEstoque = conn.prepareStatement(devolverCopia)) {
+                            stmtEstoque.setLong(1, isbnLivro);
+                            stmtEstoque.executeUpdate();
+                            System.out.println("Estoque atualizado: a devolução da cópia foi realizada");
+                        }
+                    }
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Erro ao consultar empréstimos: " + e.getMessage());
+        }
+    }
+
+    public void consultarEmprestimo() {
+        System.out.println("CONSULTAR EMPRÉSTIMOS DE UM MEMBRO");
+        
+        System.out.print("Digite o ID do membro: ");
+        int idConsulta = scanner.nextInt();
+    
+        try (Connection conn = DataBase.getInstance().getConnection()) {
+            String sql = "SELECT ISBN, dataEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, idConsulta);
+                ResultSet rs = stmt.executeQuery();
+    
+                int contador = 0;
+                while (rs.next()) {
+                    contador++;
+                    long isbn = rs.getLong("ISBN");
+                    Date dataEmprestimo = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
+    
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dataEmprestimo);
+                    cal.add(Calendar.DAY_OF_MONTH, 7);
+                    Date dataPrevista = cal.getTime();
+    
+                    System.out.println("\nEmpréstimo #" + contador);
+                    System.out.println("ISBN: " + isbn);
+                    System.out.println("Data do empréstimo: " + dataEmprestimo);
+                    System.out.println("Data prevista para devolução: " + dataPrevista);
+                }
+    
+                if (contador == 0) {
+                    System.out.println("Este membro não possui livros emprestados no momento.");
+                }
+    
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar empréstimos: " + e.getMessage());
+        }
+    }
+        public void consultarMultaMembro() {
+        System.out.println("MEMBROS COM LIVROS EM ATRASO:\n");
+    
+        try (Connection conn = DataBase.getInstance().getConnection()) {
+            String sql = "SELECT idMembro, dataEmprestimo FROM emprestimoLivro WHERE isDisponivel = 0";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                ResultSet rs = stmt.executeQuery();
+    
+                Map<Integer, Integer> membrosAtrasados = new HashMap<>();
+    
+                while (rs.next()) {
+                    int idMembro = rs.getInt("idMembro");
+                    Date dataEmprestimo = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
+    
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dataEmprestimo);
+                    cal.add(Calendar.DAY_OF_MONTH, 7);
+                    Date dataPrevista = cal.getTime();
+    
+                    Date hoje = new Date();
+                    if (hoje.after(dataPrevista)) {
+                        membrosAtrasados.put(idMembro, membrosAtrasados.getOrDefault(idMembro, 0) + 1);
+                    }
+                }
+                
+                if (membrosAtrasados.isEmpty()) {
+                    System.out.println("Nenhum membro foi encontrado.");
+                } else {
+                    for (Map.Entry<Integer, Integer> entry : membrosAtrasados.entrySet()) {
+                        System.out.printf("Membro #%d - %d livro(s) em atraso%n", entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar membros com multa: " + e.getMessage());
         }
     }
 }
