@@ -1,9 +1,14 @@
 package org.project.Aplicacao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Scanner;
+import org.project.database.DataBase;
 
-public class EmprestimoLivro {
+public class EmprestimoLivro{
     private static int contadorEmprestimos = 0;
     Scanner scanner = new Scanner(System.in);
     
@@ -97,12 +102,27 @@ public class EmprestimoLivro {
         cal.setTime(dataEmprestimo);
         cal.add(Calendar.DAY_OF_MONTH,7);
         this.dataDevolucao = cal.getTime();
-        
         this.isDisponivel = false;
 
         System.out.println("Empréstimo registrado com sucesso!");
         System.out.println("Data do empréstimo: " + dataEmprestimo);
         System.out.println("Data prevista para devolução: " + dataDevolucao);
+
+        //Gravar no banco
+        try(Connection conn = DataBase.getInstance().getConnection()){
+            String sql = "INSERT INTO emprestimoLivro (isDisponivel, dataEmprestimo, multaCalculo, idMembro, ISBN) VALUES (-, -, -, -, -)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setBoolean(1, false); //Empréstimo
+                stmt.setString(2, new java.sql.Date(dataEmprestimo.getTime()).toString()); //Data de empréstimo
+                stmt.setFloat(3, 0.0f); //Multa
+                stmt.setInt(4, this.idMembro); //Membro
+                stmt.setLong(5, this.isbn); //ISBN do livro
+                stmt.executeUpdate();
+                System.out.println("Empréstimo salvo com sucesso no banco de dados!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao salvar empréstimo no banco: " + e.getMessage());
+        }
     }
 
     public void registrarDevolucao(){
