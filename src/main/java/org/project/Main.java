@@ -2,6 +2,7 @@ package org.project;
 
 import org.project.Aplicacao.EmprestimoLivro;
 import org.project.Aplicacao.Livro;
+import org.project.Aplicacao.Membro;
 import org.project.DAO.EmprestimoDAO;
 import org.project.DAO.LivroDAO;
 import org.project.DAO.MembroDAO;
@@ -64,6 +65,16 @@ public class Main {
                     livroDAO.inserirLivro(livro);
                     break;
                 case 2: //cadastro de membros
+                    scanner.nextLine();
+                    System.out.println("Digite o nome do membro: ");
+                    String nome = scanner.nextLine();
+                    System.out.println("Digite o telefone do membro: ");
+                    String telefone = scanner.nextLine();
+                    System.out.println("Digite o email do membro: ");
+                    String email = scanner.nextLine();
+                    Membro membro = new Membro(nome, telefone, email);
+                    membroDAO.cadastrarMembro(membro);
+
                     break;
                 case 3: //fazer emprestimo
                     scanner.nextLine(); // <-- nao esqueçam de fazer isso pra limpar o buffer

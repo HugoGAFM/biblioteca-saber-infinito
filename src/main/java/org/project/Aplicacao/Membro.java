@@ -1,18 +1,27 @@
 package org.project.Aplicacao;
 
 public class Membro {
-    Long idMebro;
     String nome;
     String telefone;
     String email;
     boolean devendo;
 
-    public Membro(Long idMebro, String nome, String telefone, String email, boolean devendo){
-        this.idMebro=idMebro;
+    public Membro(String nome, String telefone, String email){
         this.nome=nome;
         this.telefone=telefone;
         this.email=email;
-        this.devendo=devendo;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public boolean isDevendo() {

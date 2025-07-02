@@ -13,6 +13,19 @@ public class MembroDAO {
         this.con = con;
     }
 
+    public void cadastrarMembro(Membro membro){
+        String sql = "INSERT INTO membro (nome, telefone, email) VALUES (?,?,?)";
+        try (PreparedStatement stmt = con.prepareStatement(sql)){
+            stmt.setString(1,membro.getNome());
+            stmt.setString(3, membro.getTelefone());
+            stmt.setString(2, membro.getEmail());
+            stmt.executeUpdate();
+            System.out.println("Membro cadastrado com sucesso.");
+        } catch (SQLException e){
+            System.out.println("Erro ao cadastrar usuario..." + e.getMessage());
+        }
+    }
+
     public boolean verficarDependencias (int idMembro){
         String verificarPendencia = "SELECT devendo FROM membro WHERE idMembro = ?";
         try (
