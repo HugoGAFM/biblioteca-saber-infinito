@@ -10,13 +10,12 @@ import static org.project.database.FilesUtil.loadTextFile;
 
 public class BDconnection {
     public static void iniciar() {
-        try (
-                Connection con = DataBase.getInstance().getConnection();
-                Statement statement = con.createStatement();
-        ) {
+        try {
+            Connection con = DataBase.getInstance().getConnection(); // NÃO FECHAR AQUI
+            Statement statement = con.createStatement();
+
             statement.setQueryTimeout(30);
 
-            // Corrigido: acesso à classe FilesUtil
             String sql = FilesUtil.loadTextFile("tabelasBiblioteca.sql");
             String[] comandos = sql.split(";");
 
@@ -27,19 +26,18 @@ public class BDconnection {
                 }
             }
 
-            // Corrigido: informe o nome da tabela criada no SQL
-            ResultSet rs = statement.executeQuery("SELECT * FROM livro"); // ou "membro", etc.
+            ResultSet rs = statement.executeQuery("SELECT * FROM livro");
 
-            // Corrigido: garanta que essas colunas existem
             while (rs.next()) {
                 System.out.println("ISBN = " + rs.getLong("ISBN"));
                 System.out.println("Título = " + rs.getString("titulo"));
             }
 
-        } catch (SQLException e) {
+            statement.close(); // Fecha apenas o Statement
+            // NÃO fechar a conexão aqui!
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace(System.err);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
     public static Connection getConnection() {
