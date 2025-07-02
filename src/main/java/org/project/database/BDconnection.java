@@ -42,4 +42,7 @@ public class BDconnection {
             throw new RuntimeException(e);
         }
     }
+    public static Connection getConnection() {
+        return DataBase.getInstance().getConnection();
+    }
 }

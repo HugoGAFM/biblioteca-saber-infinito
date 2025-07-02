@@ -62,35 +62,6 @@ public class EmprestimoLivro{
         return isbn;
     }
 
-    //Setters
-    public void setIdEmprestimo(int idEmprestimo) {
-    this.idEmprestimo = idEmprestimo;
-    }
-    
-    public void setIsDisponivel(boolean isDisponivel) {
-        this.isDisponivel = isDisponivel;
-    }
-    
-    public void setDataEmprestimo(Date dataEmprestimo) {
-        this.dataEmprestimo = dataEmprestimo;
-    }
-    
-    public void setDataDevolucao(Date dataDevolucao) {
-        this.dataDevolucao = dataDevolucao;
-    }
-    
-    public void setMultaCalculo(float multaCalculo) {
-        this.multaCalculo = multaCalculo;
-    }
-    
-    public void setIdMembro(int idMembro) {
-        this.idMembro = idMembro;
-    }
-    
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
-    }
-
 
     //Métodos
     public void registrarEmprestimo(){
@@ -145,7 +116,7 @@ public class EmprestimoLivro{
             System.out.println("Data prevista para devolução: " + dataDevolucao);
 
             //Gravar no banco
-            try(Connection conn = DataBase.getInstance().getConnection()){
+            try(conn){
                 String sql = "INSERT INTO emprestimoLivro (isDisponivel, dataEmprestimo, multaCalculo, idMembro, ISBN) VALUES (?, ?, ?, ?, ?)";
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                     stmt.setBoolean(1, false);
@@ -168,6 +139,8 @@ public class EmprestimoLivro{
             } catch (SQLException e) {
                 System.err.println("Erro ao salvar empréstimo no banco: " + e.getMessage());
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -214,7 +187,7 @@ public class EmprestimoLivro{
                 String buscarEmprestimo = "SELECT dataEmprestimo, ISBN FROM emprestimoLivro WHERE idEmprestimo = ?";
                 try (PreparedStatement stmtBusca = conn.prepareStatement(buscarEmprestimo)) {
                     stmtBusca.setInt(1, idEscolhido);
-                    ResultSet rs = stmtBusca.executeQuery();
+                    rs = stmtBusca.executeQuery();
 
                     if (rs.next()) {
                         String dataEmpStr = rs.getString("dataEmprestimo");
