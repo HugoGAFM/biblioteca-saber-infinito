@@ -32,6 +32,7 @@ public class Main {
                     "\n2) Cadastrar membro." +
                     "\n3) Fazer emprestimo." +
                     "\n4) Devolver livro." +
+                    "\n5) Consutar emprestimo." +
                     "\n0) Sair.");
             escolha = scanner.nextInt();
 
@@ -101,14 +102,6 @@ public class Main {
                     int idMembroConsulta = scanner.nextInt();
 
                     emprestimoDAO.consultarEmprestimo(idMembroConsulta);
-
-                    break;
-                case 6:
-                    scanner.nextLine();
-                    System.out.print("Digite o id do membro: ");
-                    int idConsulta = scanner.nextInt();
-
-                    emprestimoDAO.consultarEmprestimo(idConsulta);
                     break;
                 default:
                 System.out.println("Saindo...");
