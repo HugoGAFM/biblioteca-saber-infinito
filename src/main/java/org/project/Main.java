@@ -1,14 +1,17 @@
 package org.project;
 
+import org.project.Aplicacao.EmprestimoLivro;
 import org.project.Aplicacao.Livro;
 import org.project.DAO.EmprestimoDAO;
 import org.project.DAO.LivroDAO;
 import org.project.DAO.MembroDAO;
 import org.project.database.BDconnection;
 import org.project.database.DataBase;
+import java.util.Calendar;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -67,16 +70,24 @@ public class Main {
                 case 3: //fazer emprestimo
                     scanner.nextLine(); // <-- nao esqueçam de fazer isso pra limpar o buffer
                     System.out.print("Digite o id do membro: ");
-                    String idMembroEmprestimo = scanner.nextLine();
+                    int idMembroEmprestimo = scanner.nextInt();
 
                     System.out.print("Digite o isbn: ");
                     long isbnEmprestimo = scanner.nextLong();
 
-                    //verificar diponibilidade membro
+                    if (livroDAO.verificarLivroDisponivel(isbnEmprestimo) && membroDAO.verficarDependencias(idMembroEmprestimo)){
+                        int idEmprestimo = 1;
+                        boolean isDisponivel = false;
+                        Date dataEmprestimo = new Date();
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(dataEmprestimo);
+                        cal.add(Calendar.DAY_OF_MONTH,7);
+                        Date dataDevolucao = cal.getTime();
+                        float multaCalculo = 0;
 
-                    livroDAO.verificarLivroDisponivel(isbnEmprestimo);
-
-                    //fazer o emprestimo
+                        EmprestimoLivro emprestimoLivro = new EmprestimoLivro(idEmprestimo, isDisponivel,dataEmprestimo,dataDevolucao,multaCalculo,idMembroEmprestimo,isbnEmprestimo);
+                        emprestimoDAO.registrarEmprestimo(emprestimoLivro);
+                    }
 
                     break;
                 case 4: //registrar devolucao

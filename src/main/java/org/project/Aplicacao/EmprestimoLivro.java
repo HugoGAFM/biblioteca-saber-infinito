@@ -64,61 +64,13 @@ public class EmprestimoLivro{
 
 
     //Métodos
-    public void registrarEmprestimo(){
-        System.out.println("REALIZAR EMPRÉSTIMO");
-        
-        System.out.print("Digite o ID do membro: ");
-        this.idMembro = scanner.nextInt();
-        
-        System.out.print("Digite o ISBN: ");
-        this.isbn = scanner.nextLong();
-
-        try (Connection conn = DataBase.getInstance().getConnection()) {
-        
-            String verificarPendencia = "SELECT devendo FROM membro WHERE idMembro = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(verificarPendencia)) {
-                stmt.setInt(1, idMembro);
-                ResultSet rs = stmt.executeQuery();
-                if (!rs.next()) {
-                    System.out.println("Membro não encontrado.");
-                    return;
-                }
-                if (rs.getBoolean("devendo")) {
-                    System.out.println("Membro possui pendências. Empréstimo não permitido.");
-                    return;
-                }
-            }
-        
-            String verificarLivro = "SELECT numCopias FROM livro WHERE ISBN = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(verificarLivro)) {
-                stmt.setLong(1, isbn);
-                ResultSet rs = stmt.executeQuery();
-                if (!rs.next()) {
-                    System.out.println("Livro não encontrado.");
-                    return;
-                }
-                int copias = rs.getInt("numCopias");
-                if (copias <= 0) {
-                    System.out.println("📕 Nenhuma cópia disponível deste livro.");
-                    return;
-                }
-            }
-        
-            this.dataEmprestimo = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(dataEmprestimo);
-            cal.add(Calendar.DAY_OF_MONTH,7);
-            this.dataDevolucao = cal.getTime();
-            this.isDisponivel = false;
-
-            System.out.println("Empréstimo registrado com sucesso!");
-            System.out.println("Data do empréstimo: " + dataEmprestimo);
-            System.out.println("Data prevista para devolução: " + dataDevolucao);
+    public void registrarEmprestimo(EmprestimoLivro emprestimo){
+        Connection con = DataBase.getInstance().getConnection();
 
             //Gravar no banco
-            try(conn){
+            try(con){
                 String sql = "INSERT INTO emprestimoLivro (isDisponivel, dataEmprestimo, multaCalculo, idMembro, ISBN) VALUES (?, ?, ?, ?, ?)";
-                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                try (PreparedStatement stmt = con.prepareStatement(sql)) {
                     stmt.setBoolean(1, false);
                     stmt.setString(2, new java.sql.Date(dataEmprestimo.getTime()).toString());
                     stmt.setString(3, new java.sql.Date(dataDevolucao.getTime()).toString());
@@ -130,18 +82,15 @@ public class EmprestimoLivro{
                 }
 
                 String atualizarEstoque = "UPDATE livro SET numCopias = numCopias - 1 WHERE ISBN = ?";
-                try (PreparedStatement stmt = conn.prepareStatement(atualizarEstoque)) {
+                try (PreparedStatement stmt = con.prepareStatement(atualizarEstoque)) {
                     stmt.setLong(1, isbn);
                     stmt.executeUpdate();
                     System.out.println("📦 Estoque atualizado: 1 cópia emprestada.");
                 }
-                
+
             } catch (SQLException e) {
                 System.err.println("Erro ao salvar empréstimo no banco: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void registrarDevolucao(){
@@ -152,9 +101,9 @@ public class EmprestimoLivro{
 
         System.out.println("\nLIVROS EMPRESTADOS AO USUÁRIO");
 
-        try (Connection conn = DataBase.getInstance().getConnection()) {
+        try (Connection con = DataBase.getInstance().getConnection()) {
             String consulta = "SELECT idEmprestimo, ISBN, dataEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
-            try (PreparedStatement stmt = conn.prepareStatement(consulta)) {
+            try (PreparedStatement stmt = con.prepareStatement(consulta)) {
                 stmt.setInt(1, idMembro);
                 ResultSet rs = stmt.executeQuery();
 
@@ -185,7 +134,7 @@ public class EmprestimoLivro{
                 }
 
                 String buscarEmprestimo = "SELECT dataEmprestimo, ISBN FROM emprestimoLivro WHERE idEmprestimo = ?";
-                try (PreparedStatement stmtBusca = conn.prepareStatement(buscarEmprestimo)) {
+                try (PreparedStatement stmtBusca = con.prepareStatement(buscarEmprestimo)) {
                     stmtBusca.setInt(1, idEscolhido);
                     rs = stmtBusca.executeQuery();
 
@@ -204,7 +153,7 @@ public class EmprestimoLivro{
                         float multa = diasAtraso > 0 ? diasAtraso * 2.0f : 0.0f;
 
                         String atualizar = "UPDATE emprestimoLivro SET isDisponivel = 1, dataDevolucao = ?, multaCalculo = ? WHERE idEmprestimo = ?";
-                        try (PreparedStatement stmtAtualiza = conn.prepareStatement(atualizar)) {
+                        try (PreparedStatement stmtAtualiza = con.prepareStatement(atualizar)) {
                             stmtAtualiza.setString(1, new java.sql.Date(hoje.getTime()).toString());
                             stmtAtualiza.setFloat(2, multa);
                             stmtAtualiza.setInt(3, idEscolhido);
@@ -219,7 +168,7 @@ public class EmprestimoLivro{
                         }
 
                         String devolverCopia = "UPDATE livro SET numCopias = numCopias + 1 WHERE ISBN = ?";
-                        try (PreparedStatement stmtEstoque = conn.prepareStatement(devolverCopia)) {
+                        try (PreparedStatement stmtEstoque = con.prepareStatement(devolverCopia)) {
                             stmtEstoque.setLong(1, isbnLivro);
                             stmtEstoque.executeUpdate();
                             System.out.println("Estoque atualizado: a devolução da cópia foi realizada");
@@ -273,9 +222,9 @@ public class EmprestimoLivro{
         public void consultarMultaMembro() {
         System.out.println("MEMBROS COM LIVROS EM ATRASO:\n");
     
-        try (Connection conn = DataBase.getInstance().getConnection()) {
+        try (Connection con = DataBase.getInstance().getConnection()) {
             String sql = "SELECT idMembro, dataEmprestimo FROM emprestimoLivro WHERE isDisponivel = 0";
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 ResultSet rs = stmt.executeQuery();
     
                 Map<Integer, Integer> membrosAtrasados = new HashMap<>();
