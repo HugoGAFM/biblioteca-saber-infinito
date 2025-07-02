@@ -7,7 +7,6 @@ import org.project.DAO.LivroDAO;
 import org.project.DAO.MembroDAO;
 import org.project.database.BDconnection;
 import org.project.database.DataBase;
-import java.util.Calendar;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -76,13 +75,9 @@ public class Main {
 
                     if (livroDAO.verificarLivroDisponivel(isbnEmprestimo) && membroDAO.verficarDependencias(idMembroEmprestimo)){
                         Date dataEmprestimo = new Date();
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(dataEmprestimo);
-                        cal.add(Calendar.DAY_OF_MONTH,7);
-                        Date dataDevolucao = cal.getTime();
                         float multaCalculo = 0;
 
-                        EmprestimoLivro emprestimoLivro = new EmprestimoLivro(dataEmprestimo,dataDevolucao,multaCalculo,idMembroEmprestimo,isbnEmprestimo);
+                        EmprestimoLivro emprestimoLivro = new EmprestimoLivro(dataEmprestimo,multaCalculo,idMembroEmprestimo,isbnEmprestimo);
                         emprestimoDAO.registrarEmprestimo(emprestimoLivro);
                     }
 
@@ -93,6 +88,8 @@ public class Main {
                     scanner.nextLine(); // <-- nao esqueçam de fazer isso pra limpar o buffer
                     System.out.print("Digite o id do membro: ");
                     int idMembroConsulta = scanner.nextInt();
+
+                    emprestimoDAO.consultarEmprestimo(idMembroConsulta);
 
                     break;
                 default:

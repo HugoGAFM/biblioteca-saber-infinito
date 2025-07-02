@@ -18,16 +18,14 @@ public class EmprestimoLivro{
     int idEmprestimo;
     boolean isDisponivel;
     Date dataEmprestimo;
-    Date dataDevolucao;
     float multaCalculo;
     int idMembro;
     Long isbn;
 
-    public EmprestimoLivro(Date dataEmprestimo, Date dataDevolucao, float multaCalculo, int idMembro, Long isbn){
+    public EmprestimoLivro(Date dataEmprestimo, float multaCalculo, int idMembro, Long isbn){
         this.idEmprestimo = ++contadorEmprestimos;
         this.isDisponivel = true;
         this.dataEmprestimo = dataEmprestimo;
-        this.dataDevolucao = dataDevolucao;
         this.multaCalculo = multaCalculo;
         this.idMembro = idMembro;
         this.isbn = isbn;
@@ -44,10 +42,6 @@ public class EmprestimoLivro{
 
     public Date getDataEmprestimo(){
         return dataEmprestimo;
-    }
-
-    public Date getDataDevolucao(){
-        return dataDevolucao;
     }
 
     public float getMultaCalculo(){

@@ -27,7 +27,6 @@ public class EmprestimoDAO {
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 stmt.setBoolean(1, false);
                 stmt.setString(2, new java.sql.Date(emprestimo.getDataEmprestimo().getTime()).toString());
-                stmt.setString(3, new java.sql.Date(emprestimo.getDataDevolucao().getTime()).toString());
                 stmt.setFloat(4, 0.0f);
                 stmt.setInt(5, emprestimo.getIdMembro());
                 stmt.setLong(6, emprestimo.getIsbn());
@@ -40,6 +39,13 @@ public class EmprestimoDAO {
                 stmt.setLong(1, emprestimo.getIsbn());
                 stmt.executeUpdate();
                 System.out.println("📦 Estoque atualizado: 1 cópia emprestada.");
+            }
+
+            String atualizarMembro = "UPDATE membro SET devendo = 1 WHERE idMembro = ?";
+            try (PreparedStatement stmt = con.prepareStatement(atualizarMembro)) {
+                stmt.setLong(1, emprestimo.getIdMembro());
+                stmt.executeUpdate();
+                System.out.println("Membro atualizado: Agora esta devendo.");
             }
 
         } catch (SQLException e) {
@@ -58,9 +64,7 @@ public class EmprestimoDAO {
                 stmt.setInt(1, idConsulta);
                 ResultSet rs = stmt.executeQuery();
 
-                int contador = 0;
-                while (rs.next()) {
-                    contador++;
+                if (rs.next()) {
                     long isbn = rs.getLong("ISBN");
                     Date dataEmprestimo = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
 
@@ -72,9 +76,7 @@ public class EmprestimoDAO {
                     System.out.println("ISBN: " + isbn);
                     System.out.println("Data do empréstimo: " + dataEmprestimo);
                     System.out.println("Data prevista para devolução: " + dataPrevista);
-                }
-
-                if (contador == 0) {
+                } else {
                     System.out.println("Este membro não possui livros emprestados no momento.");
                 }
 
