@@ -7,8 +7,6 @@ import org.project.DAO.EmprestimoDAO;
 import org.project.DAO.LivroDAO;
 import org.project.DAO.MembroDAO;
 import org.project.database.BDconnection;
-import org.project.database.DataBase;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
@@ -32,7 +30,8 @@ public class Main {
                     "\n2) Cadastrar membro." +
                     "\n3) Fazer emprestimo." +
                     "\n4) Devolver livro." +
-                    "\n5) Consutar emprestimo." +
+                    "\n5) Consultar emprestimo." +
+                    "\n6) Consultar membros com multa." +
                     "\n0) Sair.");
             escolha = scanner.nextInt();
 
@@ -95,6 +94,8 @@ public class Main {
 
                     break;
                 case 4: //registrar devolucao
+                    scanner.nextLine(); // limpar o buffer
+                    emprestimoDAO.registrarDevolucao();
                     break;
                 case 5: //consultar emprestimo
                     scanner.nextLine(); // <-- nao esqueçam de fazer isso pra limpar o buffer
@@ -102,6 +103,10 @@ public class Main {
                     int idMembroConsulta = scanner.nextInt();
 
                     emprestimoDAO.consultarEmprestimo(idMembroConsulta);
+                    break;
+                case 6:
+                    scanner.nextLine();
+                    emprestimoDAO.consultarMultaMembro();
                     break;
                 default:
                 System.out.println("Saindo...");

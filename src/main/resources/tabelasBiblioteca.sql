@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS emprestimoLivro (
     isDisponivel BOOLEAN NOT NULL,
     dataEmprestimo DATE,
     multaCalculo REAL, -- <-- No SQlite, REAL = FLOAT, não é real de reais.
+    dataDevolucao DATE,
     idMembro INTEGER,
     ISBN INTEGER,
     FOREIGN KEY (idMembro) REFERENCES membro(idMembro),
