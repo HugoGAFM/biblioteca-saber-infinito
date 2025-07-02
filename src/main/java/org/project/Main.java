@@ -62,7 +62,6 @@ public class Main {
                     int copias = scanner.nextInt();
 
                     Livro livro = new Livro(isbn, titulo, autor, dataPublicacao, copias);
-
                     livroDAO.inserirLivro(livro);
                     break;
                 case 2: //cadastro de membros
@@ -76,8 +75,6 @@ public class Main {
                     long isbnEmprestimo = scanner.nextLong();
 
                     if (livroDAO.verificarLivroDisponivel(isbnEmprestimo) && membroDAO.verficarDependencias(idMembroEmprestimo)){
-                        int idEmprestimo = 1;
-                        boolean isDisponivel = false;
                         Date dataEmprestimo = new Date();
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(dataEmprestimo);
@@ -85,7 +82,7 @@ public class Main {
                         Date dataDevolucao = cal.getTime();
                         float multaCalculo = 0;
 
-                        EmprestimoLivro emprestimoLivro = new EmprestimoLivro(idEmprestimo, isDisponivel,dataEmprestimo,dataDevolucao,multaCalculo,idMembroEmprestimo,isbnEmprestimo);
+                        EmprestimoLivro emprestimoLivro = new EmprestimoLivro(dataEmprestimo,dataDevolucao,multaCalculo,idMembroEmprestimo,isbnEmprestimo);
                         emprestimoDAO.registrarEmprestimo(emprestimoLivro);
                     }
 
@@ -93,8 +90,10 @@ public class Main {
                 case 4: //registrar devolucao
                     break;
                 case 5: //consultar emprestimo
-                    break;
-                case 6: //consultar multa
+                    scanner.nextLine(); // <-- nao esqueçam de fazer isso pra limpar o buffer
+                    System.out.print("Digite o id do membro: ");
+                    int idMembroConsulta = scanner.nextInt();
+
                     break;
                 default:
                 System.out.println("Saindo...");

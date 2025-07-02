@@ -23,7 +23,7 @@ public class EmprestimoLivro{
     int idMembro;
     Long isbn;
 
-    public EmprestimoLivro(int idEmprestimo, boolean isDisponivel, Date dataEmprestimo, Date dataDevolucao, float multaCalculo, int idMembro, Long isbn){
+    public EmprestimoLivro(Date dataEmprestimo, Date dataDevolucao, float multaCalculo, int idMembro, Long isbn){
         this.idEmprestimo = ++contadorEmprestimos;
         this.isDisponivel = true;
         this.dataEmprestimo = dataEmprestimo;
@@ -64,35 +64,6 @@ public class EmprestimoLivro{
 
 
     //Métodos
-    public void registrarEmprestimo(EmprestimoLivro emprestimo){
-        Connection con = DataBase.getInstance().getConnection();
-
-            //Gravar no banco
-            try(con){
-                String sql = "INSERT INTO emprestimoLivro (isDisponivel, dataEmprestimo, multaCalculo, idMembro, ISBN) VALUES (?, ?, ?, ?, ?)";
-                try (PreparedStatement stmt = con.prepareStatement(sql)) {
-                    stmt.setBoolean(1, false);
-                    stmt.setString(2, new java.sql.Date(dataEmprestimo.getTime()).toString());
-                    stmt.setString(3, new java.sql.Date(dataDevolucao.getTime()).toString());
-                    stmt.setFloat(4, 0.0f);
-                    stmt.setInt(5, this.idMembro);
-                    stmt.setLong(6, this.isbn);
-                    stmt.executeUpdate();
-                    System.out.println("Empréstimo salvo com sucesso no banco de dados!");
-                }
-
-                String atualizarEstoque = "UPDATE livro SET numCopias = numCopias - 1 WHERE ISBN = ?";
-                try (PreparedStatement stmt = con.prepareStatement(atualizarEstoque)) {
-                    stmt.setLong(1, isbn);
-                    stmt.executeUpdate();
-                    System.out.println("📦 Estoque atualizado: 1 cópia emprestada.");
-                }
-
-            } catch (SQLException e) {
-                System.err.println("Erro ao salvar empréstimo no banco: " + e.getMessage());
-            }
-    }
-
     public void registrarDevolucao(){
         System.out.println("REALIZAR DEVOLUÇÃO");
         
@@ -181,44 +152,7 @@ public class EmprestimoLivro{
         }
     }
 
-    public void consultarEmprestimo() {
-        System.out.println("CONSULTAR EMPRÉSTIMOS DE UM MEMBRO");
-        
-        System.out.print("Digite o ID do membro: ");
-        int idConsulta = scanner.nextInt();
-    
-        try (Connection conn = DataBase.getInstance().getConnection()) {
-            String sql = "SELECT ISBN, dataEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setInt(1, idConsulta);
-                ResultSet rs = stmt.executeQuery();
-    
-                int contador = 0;
-                while (rs.next()) {
-                    contador++;
-                    long isbn = rs.getLong("ISBN");
-                    Date dataEmprestimo = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
-    
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(dataEmprestimo);
-                    cal.add(Calendar.DAY_OF_MONTH, 7);
-                    Date dataPrevista = cal.getTime();
-    
-                    System.out.println("\nEmpréstimo #" + contador);
-                    System.out.println("ISBN: " + isbn);
-                    System.out.println("Data do empréstimo: " + dataEmprestimo);
-                    System.out.println("Data prevista para devolução: " + dataPrevista);
-                }
-    
-                if (contador == 0) {
-                    System.out.println("Este membro não possui livros emprestados no momento.");
-                }
-    
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro ao consultar empréstimos: " + e.getMessage());
-        }
-    }
+
         public void consultarMultaMembro() {
         System.out.println("MEMBROS COM LIVROS EM ATRASO:\n");
     

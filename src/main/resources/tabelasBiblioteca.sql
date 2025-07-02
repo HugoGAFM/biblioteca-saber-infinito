@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS emprestimoLivro (
     idEmprestimo INTEGER PRIMARY KEY AUTOINCREMENT,
     isDisponivel BOOLEAN NOT NULL,
     dataEmprestimo DATE,
+    dataDevolucao DATE,
     multaCalculo REAL, -- <-- No SQlite, REAL = FLOAT, não é real de reais.
     idMembro INTEGER,
     ISBN INTEGER,

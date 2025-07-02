@@ -51,10 +51,36 @@ public class EmprestimoDAO {
 
     }
 
-    public void consultarEmprestimo(EmprestimoLivro emprestimoLivro) {
+    public void consultarEmprestimo(int idConsulta) {
+        try (Connection con = DataBase.getInstance().getConnection()) {
+            String sql = "SELECT ISBN, dataEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setInt(1, idConsulta);
+                ResultSet rs = stmt.executeQuery();
 
-    }
-    public void consultarEmprestimoAtrasado(EmprestimoLivro emprestimoLivro) {
+                int contador = 0;
+                while (rs.next()) {
+                    contador++;
+                    long isbn = rs.getLong("ISBN");
+                    Date dataEmprestimo = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
 
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dataEmprestimo);
+                    cal.add(Calendar.DAY_OF_MONTH, 7);
+                    Date dataPrevista = cal.getTime();
+
+                    System.out.println("ISBN: " + isbn);
+                    System.out.println("Data do empréstimo: " + dataEmprestimo);
+                    System.out.println("Data prevista para devolução: " + dataPrevista);
+                }
+
+                if (contador == 0) {
+                    System.out.println("Este membro não possui livros emprestados no momento.");
+                }
+
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar empréstimos: " + e.getMessage());
+        }
     }
 }
