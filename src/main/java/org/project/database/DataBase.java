@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DataBase {
-    private Connection connection = null;
+    private Connection connection;
 
     private static DataBase INSTANCE = null;
 
@@ -20,10 +20,7 @@ public class DataBase {
         }
     }
 
-    public Connection getConnection(){
-        return this.connection;
-
-    }
+    public Connection getConnection(){return this.connection;}
 
     public void closeConnection(){
         try {

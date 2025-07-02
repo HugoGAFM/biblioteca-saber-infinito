@@ -27,9 +27,9 @@ public class EmprestimoDAO {
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
                 stmt.setBoolean(1, false);
                 stmt.setString(2, new java.sql.Date(emprestimo.getDataEmprestimo().getTime()).toString());
-                stmt.setFloat(4, 0.0f);
-                stmt.setInt(5, emprestimo.getIdMembro());
-                stmt.setLong(6, emprestimo.getIsbn());
+                stmt.setFloat(3, 0.0f);
+                stmt.setInt(4, emprestimo.getIdMembro());
+                stmt.setLong(5, emprestimo.getIsbn());
                 stmt.executeUpdate();
                 System.out.println("Empréstimo salvo com sucesso no banco de dados!");
             }

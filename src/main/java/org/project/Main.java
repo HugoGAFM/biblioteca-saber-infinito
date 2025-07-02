@@ -103,6 +103,13 @@ public class Main {
                     emprestimoDAO.consultarEmprestimo(idMembroConsulta);
 
                     break;
+                case 6:
+                    scanner.nextLine();
+                    System.out.print("Digite o id do membro: ");
+                    int idConsulta = scanner.nextInt();
+
+                    emprestimoDAO.consultarEmprestimo(idConsulta);
+                    break;
                 default:
                 System.out.println("Saindo...");
             }
