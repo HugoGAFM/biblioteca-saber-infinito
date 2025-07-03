@@ -1,19 +1,9 @@
 package org.project.Aplicacao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.Calendar;
-import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
-import org.project.database.DataBase;
 
 public class EmprestimoLivro {
     private static int contadorEmprestimos = 0;
-    Scanner scanner = new Scanner(System.in);
 
     int idEmprestimo;
     boolean isDisponivel;
