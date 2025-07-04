@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="10" maxWidth="400"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.project.Controllers.DevolucaoController">
+
+    <Label text="Devolução de Livro" style="-fx-font-size: 18px;"/>
+
+    <TextField fx:id="idMembroField" promptText="ID do Membro" maxWidth="300"/>
+
+    <Button text="Consultar Empréstimos" onAction="#consultarEmprestimos" maxWidth="200"/>
+
+    <ComboBox fx:id="emprestimoBox" promptText="Selecione o Empréstimo" maxWidth="300"/>
+
+    <Button text="Confirmar Devolução" onAction="#registrarDevolucao" maxWidth="200"/>
+
+</VBox>

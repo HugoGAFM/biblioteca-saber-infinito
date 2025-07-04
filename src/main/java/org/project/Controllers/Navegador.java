@@ -37,7 +37,13 @@ public class Navegador {
             empCtrl.setDAOs(emprestimoDAO, membroDAO, livroDAO);
             Tab tabEmprestimo = new Tab("Empréstimo", empPane);
 
-            tabPane.getTabs().addAll(tabLivro, tabMembro, tabEmprestimo);
+            FXMLLoader loaderDev = new FXMLLoader(getClass().getResource("/Paginas/Devolucao.fxml"));
+            Parent devolucaoPane = loaderDev.load();
+            DevolucaoController devCtrl = loaderDev.getController();
+            devCtrl.setEmprestimoDAO(emprestimoDAO);
+            Tab tabDevolucao = new Tab("Devolução", devolucaoPane);
+
+            tabPane.getTabs().addAll(tabLivro, tabMembro, tabEmprestimo, tabDevolucao);
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         } catch (Exception e) {
