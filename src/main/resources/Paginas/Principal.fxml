@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<TabPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="org.project.Controllers.Navegador">
+    <tabs>
+        <Tab text="Livros">
+            <fx:include source="CadastroLivro.fxml" fx:id="cadastroLivroCtrl"/>
+        </Tab>
+        <Tab text="Membros">
+            <fx:include source="CadastroMembro.fxml" fx:id="cadastroMembroCtrl"/>
+        </Tab>
+        <Tab text="Empréstimo">
+            <fx:include source="Emprestimo.fxml" fx:id="emprestimoCtrl"/>
+        </Tab>
+    </tabs>
+</TabPane>

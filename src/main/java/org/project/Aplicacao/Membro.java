@@ -1,6 +1,7 @@
 package org.project.Aplicacao;
 
 public class Membro {
+    int idMembro;
     String nome;
     String telefone;
     String email;
@@ -11,6 +12,8 @@ public class Membro {
         this.telefone=telefone;
         this.email=email;
     }
+
+    public int getIdMembro() {return idMembro;}
 
     public String getNome() {
         return nome;
@@ -28,4 +31,9 @@ public class Membro {
         return devendo;
     }
 
+
+    @Override
+    public String toString() {
+        return nome + " - " + email;
+    }
 }

@@ -45,6 +45,10 @@ public class EmprestimoLivro {
     public Long getIsbn() {
         return isbn;
     }
+
+    public void setContadorEmprestimo() {
+        this.contadorEmprestimos = ++contadorEmprestimos;
+    }
 }
 
 

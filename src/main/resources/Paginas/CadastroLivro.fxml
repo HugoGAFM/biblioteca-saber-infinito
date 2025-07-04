@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.project.Controllers.CadastroLivroController">
+    <Label text="Cadastro de Livro" style="-fx-font-size: 18px;"/>
+    <TextField fx:id="isbnField" promptText="ISBN" maxWidth="300"/>
+    <TextField fx:id="tituloField" promptText="Título" maxWidth="300"/>
+    <TextField fx:id="autorField" promptText="Autor" maxWidth="300"/>
+    <DatePicker fx:id="dataPicker"/>
+    <Spinner fx:id="copiasSpinner" prefWidth="200"/>
+    <Button text="Salvar Livro" onAction="#handleSalvar"/>
+</VBox>

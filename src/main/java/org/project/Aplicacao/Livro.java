@@ -35,4 +35,9 @@ public class Livro {
     public int getnumCopias() {
         return numCopias;
     }
+
+    @Override
+    public String toString() {
+        return titulo + " - " + autor + " (ISBN: " + ISBN + ")";
+    }
 }

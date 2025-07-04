@@ -32,6 +32,7 @@ public class EmprestimoDAO {
                 stmt.setLong(5, emprestimo.getIsbn());
                 stmt.executeUpdate();
                 System.out.println("Empréstimo salvo com sucesso no banco de dados!");
+                emprestimo.setContadorEmprestimo();
             }
 
             String atualizarEstoque = "UPDATE livro SET numCopias = numCopias - 1 WHERE ISBN = ?";

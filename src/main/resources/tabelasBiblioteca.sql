@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS livro (
     numCopias INTEGER
 );
 CREATE TABLE IF NOT EXISTS membro (
-    idMembro INTEGER PRIMARY KEY,
+    idMembro INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     telefone TEXT,
     email TEXT,

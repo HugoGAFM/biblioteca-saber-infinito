@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MembroDAO {
     private Connection con;
@@ -17,8 +19,8 @@ public class MembroDAO {
         String sql = "INSERT INTO membro (nome, telefone, email) VALUES (?,?,?)";
         try (PreparedStatement stmt = con.prepareStatement(sql)){
             stmt.setString(1,membro.getNome());
-            stmt.setString(3, membro.getTelefone());
-            stmt.setString(2, membro.getEmail());
+            stmt.setString(2, membro.getTelefone());
+            stmt.setString(3, membro.getEmail());
             stmt.executeUpdate();
             System.out.println("Membro cadastrado com sucesso.");
         } catch (SQLException e){
@@ -48,4 +50,24 @@ public class MembroDAO {
         }
     }
 
+    public List<Membro> buscarTodos() {
+        List<Membro> membros = new ArrayList<>();
+        String sql = "SELECT idMembro, nome, telefone, email FROM membro";
+        try (PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Membro membro = new Membro(
+                        rs.getString("nome"),
+                        rs.getString("telefone"),
+                        rs.getString("email")
+                );
+                membros.add(membro);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar membros: " + e.getMessage());
+        }
+        return membros;
+    }
 }

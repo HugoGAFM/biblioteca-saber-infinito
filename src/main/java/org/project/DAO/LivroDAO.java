@@ -1,9 +1,10 @@
-
 package org.project.DAO;
-
 
 import org.project.Aplicacao.Livro;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LivroDAO {
     private Connection con;
@@ -47,5 +48,27 @@ public class LivroDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    public List<Livro> buscarDisponiveis() {
+        List<Livro> livros = new ArrayList<>();
+        String sql = "SELECT ISBN, titulo, autor, dataPublicacao, numCopias FROM livro WHERE numCopias > 0";
+        try (PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Livro livro = new Livro(
+                        rs.getString("ISBN"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        LocalDate.parse(rs.getString("dataPublicacao")),
+                        rs.getInt("numCopias")
+                );
+                livros.add(livro);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar livros disponíveis: " + e.getMessage());
+        }
+        return livros;
     }
 }
