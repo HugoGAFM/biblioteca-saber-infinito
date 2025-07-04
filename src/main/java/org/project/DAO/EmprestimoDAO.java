@@ -117,6 +117,7 @@ public class EmprestimoDAO {
             System.err.println("Erro ao consultar membros com multa: " + e.getMessage());
         }
     }
+
     public List<Integer> consultarEmprestimosAtivosDoMembro(int idMembro) {
         List<Integer> lista = new ArrayList<>();
         String sql = "SELECT idEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
@@ -136,7 +137,7 @@ public class EmprestimoDAO {
 
     public boolean registrarDevolucaoController(int idEmprestimo) {
         try {
-            String buscarEmprestimo = "SELECT dataEmprestimo, ISBN FROM emprestimoLivro WHERE idEmprestimo = ?";
+            String buscarEmprestimo = "SELECT dataEmprestimo, ISBN, IdMembro FROM emprestimoLivro WHERE idEmprestimo = ?";
             try (PreparedStatement stmtBusca = con.prepareStatement(buscarEmprestimo)) {
                 stmtBusca.setInt(1, idEmprestimo);
                 ResultSet rs = stmtBusca.executeQuery();
@@ -145,6 +146,7 @@ public class EmprestimoDAO {
                     String dataEmpStr = rs.getString("dataEmprestimo");
                     long isbnLivro = rs.getLong("ISBN");
                     Date dataEmprestimo = java.sql.Date.valueOf(dataEmpStr);
+                    int idMembro = rs.getInt("IdMembro");
 
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(dataEmprestimo);
@@ -167,6 +169,13 @@ public class EmprestimoDAO {
                     try (PreparedStatement stmtEstoque = con.prepareStatement(devolverCopia)) {
                         stmtEstoque.setLong(1, isbnLivro);
                         stmtEstoque.executeUpdate();
+                    }
+
+                    String atualizarMembro = "UPDATE membro SET devendo = 0 WHERE idMembro = ?";
+                    try (PreparedStatement stmt = con.prepareStatement(atualizarMembro)) {
+                        stmt.setLong(1, idMembro);
+                        stmt.executeUpdate();
+                        System.out.println("Membro atualizado: Agora não está devendo.");
                     }
 
                     return true;

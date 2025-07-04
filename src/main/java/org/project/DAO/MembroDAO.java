@@ -28,7 +28,7 @@ public class MembroDAO {
         }
     }
 
-    public boolean verficarDependencias (int idMembro){
+    public boolean verificarDependencias (int idMembro){
         String verificarPendencia = "SELECT devendo FROM membro WHERE idMembro = ?";
         try (
                 PreparedStatement stmt = con.prepareStatement(verificarPendencia)) {

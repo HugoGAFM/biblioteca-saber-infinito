@@ -31,6 +31,7 @@ public class Membro {
         return devendo;
     }
 
+    public void setIdMembro(int idMembro) {this.idMembro = idMembro;}
 
     @Override
     public String toString() {
