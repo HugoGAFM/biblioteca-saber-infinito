@@ -39,7 +39,7 @@ public class LivroDAO {
             }
             int copias = rs.getInt("numCopias");
             if (copias <= 0) {
-                System.out.println("📕 Nenhuma cópia disponível deste livro.");
+                System.out.println("Nenhuma cópia disponível deste livro.");
                 return false;
             }
             else {
