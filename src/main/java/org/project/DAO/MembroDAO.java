@@ -2,10 +2,7 @@ package org.project.DAO;
 
 import org.project.Aplicacao.Membro;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,16 +12,24 @@ public class MembroDAO {
         this.con = con;
     }
 
-    public void cadastrarMembro(Membro membro){
-        String sql = "INSERT INTO membro (nome, telefone, email) VALUES (?,?,?)";
-        try (PreparedStatement stmt = con.prepareStatement(sql)){
-            stmt.setString(1,membro.getNome());
+    public void cadastrarMembro(Membro membro) {
+        String sql = "INSERT INTO membro (nome, telefone, email) VALUES (?, ?, ?)";
+        try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, membro.getNome());
             stmt.setString(2, membro.getTelefone());
             stmt.setString(3, membro.getEmail());
             stmt.executeUpdate();
-            System.out.println("Membro cadastrado com sucesso.");
-        } catch (SQLException e){
-            System.out.println("Erro ao cadastrar usuario..." + e.getMessage());
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int id = rs.getInt(1);
+                membro.setIdMembro(id);
+            }
+
+            System.out.println("Membro cadastrado com ID: " + membro.getIdMembro());
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar membro: " + e.getMessage());
         }
     }
 
@@ -55,16 +60,15 @@ public class MembroDAO {
         String sql = "SELECT idMembro, nome, telefone, email FROM membro";
         try (PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
             while (rs.next()) {
                 Membro membro = new Membro(
                         rs.getString("nome"),
                         rs.getString("telefone"),
                         rs.getString("email")
                 );
+                membro.setIdMembro(rs.getInt("idMembro"));
                 membros.add(membro);
             }
-
         } catch (SQLException e) {
             System.out.println("Erro ao buscar membros: " + e.getMessage());
         }

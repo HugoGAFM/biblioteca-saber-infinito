@@ -42,7 +42,6 @@ public class EmprestimoController {
     @FXML
     public void registrarEmprestimo() {
         Membro membro = membroBox.getValue();
-        membro.setIdMembro(membro.getIdMembro() + 1);
         Livro livro = livroBox.getValue();
 
         if (membro == null || livro == null) {
@@ -51,7 +50,7 @@ public class EmprestimoController {
         }
         System.out.println("Id do membro: " + membro.getIdMembro());
 
-        if (!membroDAO.verificarDependencias(membro.getIdMembro() + 1)) {
+        if (!membroDAO.verificarDependencias(membro.getIdMembro())) {
             showMessage("Membro possui pedências. Empréstimo não permitido.");
             return;
         }
