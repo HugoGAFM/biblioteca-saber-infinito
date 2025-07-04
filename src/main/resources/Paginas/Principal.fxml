@@ -13,5 +13,11 @@
         <Tab text="Empréstimo">
             <fx:include source="Emprestimo.fxml" fx:id="emprestimoCtrl"/>
         </Tab>
+        <Tab text="Devolução">
+            <fx:include source="Devolucao.fxml" fx:id="devolucaoCtrl"/>
+        </Tab>
+        <Tab text="Consulta">
+            <fx:include source="Consulta.fxml" fx:id="consultaCtrl"/>
+        </Tab>
     </tabs>
 </TabPane>

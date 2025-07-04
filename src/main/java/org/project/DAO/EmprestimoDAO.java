@@ -187,6 +187,62 @@ public class EmprestimoDAO {
 
         return false;
     }
+    public String consultarEmprestimoFormatado(int idMembro) {
+        StringBuilder sb = new StringBuilder();
+        String sql = "SELECT ISBN, dataEmprestimo FROM emprestimoLivro WHERE idMembro = ? AND isDisponivel = 0";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idMembro);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                sb.append("ISBN: ").append(rs.getLong("ISBN"))
+                        .append(" | Data: ").append(rs.getString("dataEmprestimo")).append("\n");
+            }
+
+            if (sb.length() == 0) {
+                sb.append("Nenhum empréstimo ativo encontrado.");
+            }
+
+        } catch (SQLException e) {
+            sb.append("Erro ao consultar empréstimos: ").append(e.getMessage());
+        }
+
+        return sb.toString();
+    }
+
+    public String consultarMultaFormatado() {
+        StringBuilder sb = new StringBuilder();
+        String sql = "SELECT idMembro, dataEmprestimo FROM emprestimoLivro WHERE isDisponivel = 0";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("idMembro");
+                Date dataEmp = java.sql.Date.valueOf(rs.getString("dataEmprestimo"));
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dataEmp);
+                cal.add(Calendar.DAY_OF_MONTH, 7);
+                Date limite = cal.getTime();
+
+                Date hoje = new Date();
+                if (hoje.after(limite)) {
+                    sb.append("Membro #").append(id).append(" está em atraso.\n");
+                }
+            }
+
+            if (sb.length() == 0) {
+                sb.append("Nenhum membro com multa.");
+            }
+
+        } catch (SQLException e) {
+            sb.append("Erro ao consultar multas: ").append(e.getMessage());
+        }
+
+        return sb.toString();
+    }
 }
 
 

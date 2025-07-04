@@ -68,6 +68,7 @@ public class MembroDAO {
                 );
                 membro.setIdMembro(rs.getInt("idMembro"));
                 membros.add(membro);
+                System.out.println("Membro carregado: " + membro.getNome() + " (ID: " + membro.getIdMembro() + ")");
             }
         } catch (SQLException e) {
             System.out.println("Erro ao buscar membros: " + e.getMessage());

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.project.Controllers.ConsultaController">
+
+    <Label text="Consulta de Empréstimos e Multas" style="-fx-font-size: 18px;"/>
+
+    <TextField fx:id="idConsultaField" promptText="ID do Membro" maxWidth="300"/>
+
+    <Button text="Consultar Empréstimos" onAction="#consultarEmprestimos" maxWidth="200"/>
+
+    <Button text="Consultar Multas" onAction="#consultarMultas" maxWidth="200"/>
+
+    <TextArea fx:id="resultadoArea" editable="false" wrapText="true" maxWidth="300" prefHeight="200"/>
+</VBox>
