@@ -40,13 +40,13 @@ public class Navegador {
             FXMLLoader loaderDev = new FXMLLoader(getClass().getResource("/Paginas/Devolucao.fxml"));
             Parent devolucaoPane = loaderDev.load();
             DevolucaoController devCtrl = loaderDev.getController();
-            devCtrl.setEmprestimoDAO(emprestimoDAO);
+            devCtrl.setEmprestimoDAO(emprestimoDAO, membroDAO);
             Tab tabDevolucao = new Tab("Devolução", devolucaoPane);
 
             FXMLLoader loaderConsulta = new FXMLLoader(getClass().getResource("/Paginas/Consulta.fxml"));
             Parent ConsultaPane = loaderConsulta.load();
             ConsultaController consultaCtrl = loaderConsulta.getController();
-            consultaCtrl.setEmprestimoDAO(emprestimoDAO);
+            consultaCtrl.setEmprestimoDAO(emprestimoDAO, membroDAO);
             Tab tabConsulta = new Tab("Consultas", ConsultaPane);
 
             tabPane.getTabs().addAll(tabLivro, tabMembro, tabEmprestimo, tabDevolucao, tabConsulta);

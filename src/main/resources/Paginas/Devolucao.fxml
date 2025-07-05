@@ -6,7 +6,7 @@
 
     <Label text="Devolução de Livro" style="-fx-font-size: 18px;"/>
 
-    <TextField fx:id="idMembroField" promptText="ID do Membro" maxWidth="300"/>
+    <ComboBox fx:id="membroBox" promptText="Selecione o Membro" maxWidth="300"/>
 
     <Button text="Consultar Empréstimos" onAction="#consultarEmprestimos" maxWidth="200"/>
 

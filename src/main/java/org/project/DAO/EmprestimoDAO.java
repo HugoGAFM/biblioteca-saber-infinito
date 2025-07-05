@@ -1,6 +1,7 @@
 package org.project.DAO;
 
 import org.project.Aplicacao.EmprestimoLivro;
+import org.project.Aplicacao.Membro;
 import org.project.database.DataBase;
 import java.sql.*;
 import java.util.*;
