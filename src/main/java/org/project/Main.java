@@ -10,6 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         TabPane painel = new Navegador().montarPainelPrincipal();
+        painel.getStylesheets().add(getClass().getResource("/tema.css").toExternalForm());
         stage.setScene(new Scene(painel, 800, 600));
         stage.setTitle("Biblioteca Saber Infinito");
         stage.show();

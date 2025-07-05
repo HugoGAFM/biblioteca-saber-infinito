@@ -1,0 +1,72 @@
+.root {
+    -fx-background-color: #3E2723;
+}
+
+.label {
+    -fx-text-fill: #B87333;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 30px;
+    -fx-effect: dropshadow(gaussian, #3E2723, 2, 0.5, 1, 1);
+    -fx-padding: 4;
+}
+
+.button {
+    -fx-background-color: #B87333;
+    -fx-text-fill: #3E2723;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+}
+
+.text-field, .text-area {
+    -fx-background-color: #3E2723;
+    -fx-border-color: #B87333;
+    -fx-border-radius: 6;
+    -fx-padding: 6;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 14px;
+    -fx-text-fill: #3E2723;
+}
+
+.combo-box {
+    -fx-background-color: #4E342E;
+    -fx-border-color: #B87333;
+    -fx-border-radius: 6;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 14px;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #B87333;
+    -fx-background-color: #4E342E;
+}
+.spinner {
+    -fx-background-color: #4E342E;
+    -fx-border-color: #B87333;
+    -fx-border-radius: 6;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 14px;
+    -fx-text-fill: #B87333;
+}
+
+.spinner .text-field {
+    -fx-background-color: #3E2723;
+    -fx-text-fill: #B87333;
+    -fx-border-color: #B87333;
+}
+
+.date-picker {
+    -fx-background-color: #4E342E;
+    -fx-border-color: #B87333;
+    -fx-border-radius: 6;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 14px;
+    -fx-text-fill: #B87333;
+}
+
+.date-picker .text-field {
+    -fx-background-color: #3E2723;
+    -fx-text-fill: #B87333;
+    -fx-border-color: #B87333;
+    -fx-font-size: 14px;
+}

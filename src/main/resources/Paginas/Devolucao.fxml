@@ -4,7 +4,7 @@
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.project.Controllers.DevolucaoController">
 
-    <Label text="Devolução de Livro" style="-fx-font-size: 18px;"/>
+    <Label text="Devolução de Livro"/>
 
     <ComboBox fx:id="membroBox" promptText="Selecione o Membro" maxWidth="300"/>
 

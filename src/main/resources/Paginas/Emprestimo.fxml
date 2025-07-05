@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.project.Controllers.EmprestimoController">
-    <Label text="Registrar Empréstimo" style="-fx-font-size: 18px;"/>
+    <Label text="Registrar Empréstimo"/>
     <Button fx:id="btnAtualizar" text="🔄 Atualizar Listas" onAction="#atualizarListas"/>
     <ComboBox fx:id="membroBox" promptText="Selecionar Membro"/>
     <ComboBox fx:id="livroBox" promptText="Selecionar Livro Disponível"/>
